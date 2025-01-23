@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Applicant, Assessment, BorrowersInformation, CoMakersInformation, LoanDetails } from '../interface/interfaces';
 import { MatDialog } from '@angular/material/dialog';
 import { ApplicationService } from '../services/application.service';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { DOC_URL } from '../constant';
 import { EndorseComponent } from '../endorse/endorse.component';
 
@@ -45,7 +45,15 @@ export class UserViewComponent {
     return this.domSanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
-  url = {
+  url: {
+    authorityToDeduct: SafeResourceUrl,
+    csc: SafeResourceUrl,
+    emergency: SafeResourceUrl,
+    idApplicant: SafeResourceUrl,
+    idComaker: SafeResourceUrl,
+    payslipApplicant: SafeResourceUrl,
+    payslipComaker: SafeResourceUrl
+  } = {
     authorityToDeduct: '',
     csc: '',
     emergency: '',
@@ -53,7 +61,7 @@ export class UserViewComponent {
     idComaker: '',
     payslipApplicant: '',
     payslipComaker: ''
-  }
+  };
 
   ngOnInit(): void {
     this.loanDetails = [history.state.loanDetails];
@@ -62,14 +70,16 @@ export class UserViewComponent {
 
     console.log(this.application_id);
 
+    const baseUrl = `${DOC_URL}/${this.applicant_id}/documents/${this.application_id}`;
+
     this.url = {
-      authorityToDeduct: `${DOC_URL}/${this.applicant_id}/documents/${this.application_id}/authorityToDeduct.pdf`,
-      csc: `${DOC_URL}/${this.applicant_id}/documents/${this.application_id}/csc.pdf`,
-      emergency: `${DOC_URL}/${this.applicant_id}/documents/${this.application_id}/emergency.pdf`,
-      idApplicant: `${DOC_URL}/${this.applicant_id}/documents/${this.application_id}/idApplicant.pdf`,
-      idComaker: `${DOC_URL}/${this.applicant_id}/documents/${this.application_id}/idComaker.pdf`,
-      payslipApplicant: `${DOC_URL}/${this.applicant_id}/documents/${this.application_id}/payslipApplicant.pdf`,
-      payslipComaker: `${DOC_URL}/${this.applicant_id}/documents/${this.application_id}/payslipComaker.pdf`,
+      authorityToDeduct: this.transform(`${baseUrl}/authorityToDeduct.pdf`),
+      csc:  this.transform(`${baseUrl}/csc.pdf`),
+      emergency:  this.transform(`${baseUrl}/emergency.pdf`),
+      idApplicant:  this.transform(`${baseUrl}/idApplicant.pdf`),
+      idComaker:  this.transform(`${baseUrl}/idComaker.pdf`),
+      payslipApplicant:  this.transform(`${baseUrl}/payslipApplicant.pdf`),
+      payslipComaker:  this.transform(`${baseUrl}/payslipComaker.pdf`),
     }
 
     this.applicationService.getBorrowersInformationById(this.application_id).subscribe(borrowers => {

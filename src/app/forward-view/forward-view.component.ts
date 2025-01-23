@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { ApprovalDetails, LoanDetails, SignatureDetails } from '../interface/interfaces';
+import { ApprovalDetails, LoanApplication, LoanDetails, SignatureDetails } from '../interface/interfaces';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { FormViewComponent } from '../form-view/form-view.component';
@@ -19,7 +19,7 @@ import { TokenService } from '../services/token.service';
 })
 export class ForwardViewComponent implements OnInit {
   loanDetails: LoanDetails[] = [];
-  approvalDetails: ApprovalDetails[] = [];
+  loanApplication: LoanApplication[] = [];
   mergedDetails: any[] = [];
   roleId!: string;
 
@@ -93,12 +93,12 @@ export class ForwardViewComponent implements OnInit {
 
   updateTableData(): void {
     this.mergedDetails = this.loanDetails.map((loan) => {
-      const matchingApproval = this.approvalDetails.find(
+      const loanApplication = this.loanApplication.find(
         (app) => app.application_id === loan.application_id
       );
       return {
         ...loan,
-        ...matchingApproval,
+        ...loanApplication,
       };
     });
     console.log(this.mergedDetails)
@@ -108,13 +108,14 @@ export class ForwardViewComponent implements OnInit {
   applyFilter(): void {
     const searchValue = this.searchKey.trim().toLowerCase();
     this.dataSource.filterPredicate = (data: any, filter: string) => {
-      const status =  this.roleId === '7' ? data.status_asds : this.roleId === '8' ? data.status_sds : 'Pending';
+      const status = data.is_approved_osds;
       return (
         (data.last_name.toLowerCase().includes(searchValue) ||
           data.first_name.toLowerCase().includes(searchValue)) &&
-        (!this.filterStatus || (status ? 'Approved' : 'Not Approved') === this.filterStatus)
+        (!this.filterStatus || (status ? 'Approved' : 'Pending') === this.filterStatus)
       );
     };
+    console.log(searchValue + this.filterStatus)
     this.dataSource.filter = searchValue + this.filterStatus;
   }
 
@@ -126,8 +127,8 @@ export class ForwardViewComponent implements OnInit {
       this.updateTableData();
     });
 
-    this.applicationService.approvalDetails$.subscribe((approval) => {
-      this.approvalDetails = approval;
+    this.applicationService.loanApplication$.subscribe((loan) => {
+      this.loanApplication = loan;
       this.updateTableData();
     });
   }

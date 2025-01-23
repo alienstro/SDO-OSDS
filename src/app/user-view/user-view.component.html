@@ -1,7 +1,7 @@
 <div class="user-view">
     <div class="main">
         <div class="header">
-            <h1 class="header-text"><span class="back" (click)="goBack()">Endorsement</span> > 12345</h1>
+            <h1 class="header-text"><span class="back" (click)="goBack()">Forward</span> > 12345</h1>
         </div>
 
         <div class="table">
@@ -187,31 +187,31 @@
                     <mat-tab label="Uploaded Documents">
                         <mat-tab-group>
                             <mat-tab label="Authority To Deduct">
-                                <iframe [src]="transform(url.authorityToDeduct)" frameborder="0"></iframe>
+                                <iframe [src]="url.authorityToDeduct" frameborder="0"></iframe>
                             </mat-tab>
 
                             <mat-tab label="Payslip of Applicant">
-                                <iframe [src]="transform(url.payslipApplicant)" frameborder="0"></iframe>
+                                <iframe [src]="url.payslipApplicant" frameborder="0"></iframe>
                             </mat-tab>
 
                             <mat-tab label="Payslip of CoMaker">
-                                <iframe [src]="transform(url.payslipComaker)" frameborder="0"></iframe>
+                                <iframe [src]="url.payslipComaker" frameborder="0"></iframe>
                             </mat-tab>
 
                             <mat-tab label="Id of Applicant">
-                                <iframe [src]="transform(url.idApplicant)" frameborder="0"></iframe>
+                                <iframe [src]="url.idApplicant" frameborder="0"></iframe>
                             </mat-tab>
 
                             <mat-tab label="Id of CoMaker">
-                                <iframe [src]="transform(url.idComaker)" frameborder="0"></iframe>
+                                <iframe [src]="url.idComaker" frameborder="0"></iframe>
                             </mat-tab>
 
                             <mat-tab label="CSC Appointment">
-                                <iframe [src]="transform(url.csc)" frameborder="0"></iframe>
+                                <iframe [src]="url.csc" frameborder="0"></iframe>
                             </mat-tab>
 
                             <mat-tab label="Emergency Loan">
-                                <iframe [src]="transform(url.emergency)" frameborder="0"></iframe>
+                                <iframe [src]="url.emergency" frameborder="0"></iframe>
                             </mat-tab>
                         </mat-tab-group>
                     </mat-tab>

@@ -30,10 +30,10 @@ export class ApplicationService {
   constructor(private http: HttpClient) {
     forkJoin({
       loanDetails: this.getLoanDetails(),
-      approvalDetails: this.getApprovalDetails()
-    }).subscribe(({ loanDetails, approvalDetails }) => {
+      loanApplication: this.getLoanApplication(),
+    }).subscribe(({ loanDetails, loanApplication }) => {
       this._loanDetails.next(loanDetails);
-      this._approvalDetails.next(approvalDetails);
+      this._loanApplication.next(loanApplication);
     });
   }
 
