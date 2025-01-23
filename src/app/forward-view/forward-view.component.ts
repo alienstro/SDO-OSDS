@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { ApprovalDetails, LoanApplication, LoanDetails, SignatureDetails } from '../interface/interfaces';
+import { ApprovalDetails, DepartmentStatus, LoanApplication, LoanDetails, SignatureDetails } from '../interface/interfaces';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { FormViewComponent } from '../form-view/form-view.component';
@@ -19,7 +19,7 @@ import { TokenService } from '../services/token.service';
 })
 export class ForwardViewComponent implements OnInit {
   loanDetails: LoanDetails[] = [];
-  loanApplication: LoanApplication[] = [];
+  departmentStatus: DepartmentStatus[] = [];
   mergedDetails: any[] = [];
   roleId!: string;
 
@@ -93,22 +93,22 @@ export class ForwardViewComponent implements OnInit {
 
   updateTableData(): void {
     this.mergedDetails = this.loanDetails.map((loan) => {
-      const loanApplication = this.loanApplication.find(
+      const departmentStatus = this.departmentStatus.find(
         (app) => app.application_id === loan.application_id
       );
       return {
         ...loan,
-        ...loanApplication,
+        ...departmentStatus,
       };
     });
-    console.log(this.mergedDetails)
+    console.log("merged:", this.mergedDetails)
     this.dataSource.data = this.mergedDetails;
   }
 
   applyFilter(): void {
     const searchValue = this.searchKey.trim().toLowerCase();
     this.dataSource.filterPredicate = (data: any, filter: string) => {
-      const status = data.is_approved_osds;
+      const status = data.status;
       return (
         (data.last_name.toLowerCase().includes(searchValue) ||
           data.first_name.toLowerCase().includes(searchValue)) &&
@@ -127,8 +127,9 @@ export class ForwardViewComponent implements OnInit {
       this.updateTableData();
     });
 
-    this.applicationService.loanApplication$.subscribe((loan) => {
-      this.loanApplication = loan;
+    this.applicationService.getDepartmentStatusById(this.roleId).subscribe((loan) => {
+      this.departmentStatus = loan;
+      console.log("department status: ", this.departmentStatus);
       this.updateTableData();
     });
   }

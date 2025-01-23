@@ -107,7 +107,7 @@
                             <!-- Conditional rendering for different roles -->
 
                             <ng-container *ngIf="roleId === '1'">
-                                {{ element.is_approved_osds ? 'Approved' : 'Pending' }}
+                                {{ element.status}}
                             </ng-container>
                         </td>
                     </ng-container>

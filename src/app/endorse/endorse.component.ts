@@ -49,8 +49,9 @@ export class EndorseComponent {
           this.snackbar.open('Forwarded to Accounting successfully!', '', {
             duration: 3000
           });
-          this.applicationService.updateLoanDetails(data.application_id)
+          this.applicationService.updateDepartmentStatus(data.application_id)
           this.dialogRef.close()
+          this.router.navigate(['/forward-view']);
         } else {
           this.snackbar.open('Failed to forward to Accounting. Please try again.', '', {
             duration: 3000

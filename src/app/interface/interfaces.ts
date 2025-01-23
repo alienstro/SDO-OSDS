@@ -184,3 +184,11 @@ export interface ApprovalDetails {
     status_sds: string;
     date_submitted: Date;
 }
+
+export interface DepartmentStatus {
+    status_id: number;
+    application_id: number;
+    department_id: number;
+    status: string;
+    updated_at: Date;
+}

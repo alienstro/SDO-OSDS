@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
-import { Applicant, ApprovalDetails, Assessment, BorrowersInformation, CoMakersInformation, LoanApplication, LoanDetails, MergedLoanApplicationDetails, SignatureDetails } from '../interface/interfaces';
+import { Applicant, ApprovalDetails, Assessment, BorrowersInformation, CoMakersInformation, DepartmentStatus, LoanApplication, LoanDetails, MergedLoanApplicationDetails, SignatureDetails } from '../interface/interfaces';
 import { API_URL } from '../constant';
 
 @Injectable({
@@ -17,6 +17,7 @@ export class ApplicationService {
   private _assessmentForm = new BehaviorSubject<Assessment[]>([]);
   private _signatureDetails = new BehaviorSubject<SignatureDetails[]>([]);
   private _approvalDetails = new BehaviorSubject<ApprovalDetails[]>([]);
+  private _departmentStatus = new BehaviorSubject<DepartmentStatus[]>([]);
 
   loanApplication$ = this._loanApplication.asObservable();
   loanDetails$ = this._loanDetails.asObservable();
@@ -26,14 +27,13 @@ export class ApplicationService {
   assessmentForm$ = this._assessmentForm.asObservable();
   signatureDetails$ = this._signatureDetails.asObservable();
   approvalDetails$ = this._approvalDetails.asObservable();
+  departmentStatus$ = this._departmentStatus.asObservable();
 
   constructor(private http: HttpClient) {
     forkJoin({
       loanDetails: this.getLoanDetails(),
-      loanApplication: this.getLoanApplication(),
-    }).subscribe(({ loanDetails, loanApplication }) => {
+    }).subscribe(({ loanDetails }) => {
       this._loanDetails.next(loanDetails);
-      this._loanApplication.next(loanApplication);
     });
   }
 
@@ -41,6 +41,10 @@ export class ApplicationService {
 
   getLoanApplication(): Observable<LoanApplication[]> {
     return this.http.get<LoanApplication[]>(`${API_URL}/loanApplication`);
+  }
+
+  getDepartmentStatusById(department_id: string): Observable<DepartmentStatus[]> {
+    return this.http.get<DepartmentStatus[]>(`${API_URL}/getDepartmentStatus/${department_id}`);
   }
 
   getAssessmentDetails(): Observable<Assessment[]> {
@@ -95,6 +99,10 @@ export class ApplicationService {
     return this._loanApplication.getValue();
   }
 
+  getDepartmentStatusState() {
+    return this._departmentStatus.getValue();
+  }
+
   getLoanDetailsState() {
     return this._loanDetails.getValue();
   }
@@ -115,6 +123,10 @@ export class ApplicationService {
 
   setLoanApplicationState(setLoanApplicationState: LoanApplication[]) {
     this._loanApplication.next(setLoanApplicationState);
+  }
+
+  setDepartmentStatusState(setDepartmentStatusState: DepartmentStatus[]) {
+    this._departmentStatus.next(setDepartmentStatusState);
   }
 
   setLoanDetailsState(setLoanDetailsState: LoanDetails[]) {
@@ -206,4 +218,33 @@ export class ApplicationService {
     this.setLoanDetailsState(newState)
   }
 
+  updateLoanApplicationOSDS(application_id: number) {
+    let oldState = this.getLoanApplicationState()
+    const toUpdateApplicant = oldState.find(item => item.application_id === application_id)
+
+    oldState = oldState.filter(item => item.application_id !== application_id)
+
+    if(!toUpdateApplicant) return
+
+    toUpdateApplicant['is_approved_osds'] = 'Approved'
+
+    const newState : LoanApplication[] = [...oldState, toUpdateApplicant]
+
+    this.setLoanApplicationState(newState)
+  }
+
+  updateDepartmentStatus(application_id: number) {
+    let oldState = this.getDepartmentStatusState()
+    const toUpdateApplicant = oldState.find(item => item.application_id === application_id)
+
+    oldState = oldState.filter(item => item.application_id !== application_id)
+
+    if(!toUpdateApplicant) return
+
+    toUpdateApplicant['status'] = 'Approved'
+
+    const newState : DepartmentStatus[] = [...oldState, toUpdateApplicant]
+
+    this.setDepartmentStatusState(newState)
+  }
 }
