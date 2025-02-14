@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { API_URL } from '../env';
+import { API_URL } from '../constant';
 interface LoginResponse {
   token: string
 }
@@ -19,13 +19,15 @@ export class RequestService {
 
   constructor(private http: HttpClient) { }
 
-  login(data: LoginRequest) {
-    return this.http.post<LoginResponse>(API_URL+'login', data);
-  }
+  // login(data: LoginRequest) {
+  //   return this.http.post<LoginResponse>(API_URL+'login', data);
+  // }
+
+  private apiLoanApplication = `${API_URL}/loanApplication`;
 
   updateApprovalOSDS(data: any): Observable<any> {
     console.log(data);
-    return this.http.patch(`${API_URL}` + `updateApprovalOSDS`, data);
+    return this.http.patch(`${this.apiLoanApplication}/updateApprovalOSDS`, data);
   }
 
   // updateApprovalOSDS(data: any): Observable<any> {

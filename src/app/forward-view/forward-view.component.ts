@@ -21,7 +21,7 @@ export class ForwardViewComponent implements OnInit {
   loanDetails: LoanDetails[] = [];
   departmentStatus: DepartmentStatus[] = [];
   mergedDetails: any[] = [];
-  roleId!: string;
+  roleId!: any;
 
   dataSource: MatTableDataSource<any> = new MatTableDataSource();
 
@@ -112,7 +112,7 @@ export class ForwardViewComponent implements OnInit {
       return (
         (data.last_name.toLowerCase().includes(searchValue) ||
           data.first_name.toLowerCase().includes(searchValue)) &&
-        (!this.filterStatus || (status ? 'Approved' : 'Pending') === this.filterStatus)
+        (!this.filterStatus || (status) === this.filterStatus)
       );
     };
     console.log(searchValue + this.filterStatus)
@@ -126,6 +126,8 @@ export class ForwardViewComponent implements OnInit {
       this.loanDetails = loan;
       this.updateTableData();
     });
+
+    // console.log("role id: ", this.roleId);
 
     this.applicationService.getDepartmentStatusById(this.roleId).subscribe((loan) => {
       this.departmentStatus = loan;

@@ -54,12 +54,12 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  navigateBasedOnRole(role: string) {
+  navigateBasedOnRole(role: any) {
     role = this.authService.getRole();
 
     console.log(role)
 
-    if (role === '1') {
+    if (role === '1' || role === 1) {
       this.router.navigate(['/forward-view']);
 
     } else {

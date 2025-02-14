@@ -37,60 +37,62 @@ export class ApplicationService {
     });
   }
 
+  private apiLoanApplication = `${API_URL}/loanApplication`;
+
   /// GET BY URL
 
   getLoanApplication(): Observable<LoanApplication[]> {
-    return this.http.get<LoanApplication[]>(`${API_URL}/loanApplication`);
+    return this.http.get<LoanApplication[]>(`${this.apiLoanApplication}/loanApplication`);
   }
 
   getDepartmentStatusById(department_id: string): Observable<DepartmentStatus[]> {
-    return this.http.get<DepartmentStatus[]>(`${API_URL}/getDepartmentStatus/${department_id}`);
+    return this.http.get<DepartmentStatus[]>(`${this.apiLoanApplication}/getDepartmentStatus/${department_id}`);
   }
 
   getAssessmentDetails(): Observable<Assessment[]> {
-    return this.http.get<Assessment[]>(`${API_URL}/getAssessmentDetails`);
+    return this.http.get<Assessment[]>(`${this.apiLoanApplication}/getAssessmentDetails`);
   }
 
   getLoanDetails(): Observable<LoanDetails[]> {
-    return this.http.get<LoanDetails[]>(`${API_URL}/loanDetails`);
+    return this.http.get<LoanDetails[]>(`${this.apiLoanApplication}/loanDetails`);
   }
 
   getCoMakersInformation(): Observable<CoMakersInformation[]> {
-    return this.http.get<CoMakersInformation[]>(`${API_URL}/coMakersInformation`);
+    return this.http.get<CoMakersInformation[]>(`${this.apiLoanApplication}/coMakersInformation`);
   }
 
   getBorrowersInformation(): Observable<BorrowersInformation[]> {
-    return this.http.get<BorrowersInformation[]>(`${API_URL}/borrowersInformation`);
+    return this.http.get<BorrowersInformation[]>(`${this.apiLoanApplication}/borrowersInformation`);
   }
 
   getMergedLoanApplicationDetails(): Observable<MergedLoanApplicationDetails[]> {
-    return this.http.get<MergedLoanApplicationDetails[]>(`${API_URL}/mergedLoanApplicationDetails`);
+    return this.http.get<MergedLoanApplicationDetails[]>(`${this.apiLoanApplication}/mergedLoanApplicationDetails`);
   }
 
   getSignatureDetails(): Observable<SignatureDetails[]> {
-    return this.http.get<SignatureDetails[]>(`${API_URL}/getSignatureDetails`);
+    return this.http.get<SignatureDetails[]>(`${this.apiLoanApplication}/getSignatureDetails`);
   }
 
   getApprovalDetails(): Observable<ApprovalDetails[]> {
-    return this.http.get<ApprovalDetails[]>(`${API_URL}/getApprovalDetails`);
+    return this.http.get<ApprovalDetails[]>(`${this.apiLoanApplication}/getApprovalDetails`);
   }
 
   /// GET DATA BY ID
 
   getAssessmentDetailsById(applicationId: number): Observable<Assessment[]> {
-    return this.http.get<Assessment[]>(`${API_URL}/getAssessmentDetailsById/${applicationId}`);
+    return this.http.get<Assessment[]>(`${this.apiLoanApplication}/getAssessmentDetailsById/${applicationId}`);
   }
 
   getCoMakersInformationById(applicationId: number): Observable<CoMakersInformation[]> {
-    return this.http.get<CoMakersInformation[]>(`${API_URL}/coMakersInformationById/${applicationId}`);
+    return this.http.get<CoMakersInformation[]>(`${this.apiLoanApplication}/coMakersInformationById/${applicationId}`);
   }
 
   getBorrowersInformationById(applicationId: number): Observable<BorrowersInformation[]> {
-    return this.http.get<BorrowersInformation[]>(`${API_URL}/borrowersInformationById/${applicationId}`);
+    return this.http.get<BorrowersInformation[]>(`${this.apiLoanApplication}/borrowersInformationById/${applicationId}`);
   }
 
   getLoanApplicantById(applicantId: number): Observable<Applicant[]> {
-    return this.http.get<Applicant[]>(`${API_URL}/getApplicant/${applicantId}`);
+    return this.http.get<Applicant[]>(`${this.apiLoanApplication}/getApplicant/${applicantId}`);
   }
 
   /// GET DATA IN THE STATE
