@@ -114,6 +114,10 @@
 
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                    <tr class="no-data" *matNoDataRow>
+                        <td colspan="100%">No Records</td>
+                      </tr>
                 </table>
 
                 <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
