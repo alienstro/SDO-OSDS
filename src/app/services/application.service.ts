@@ -30,11 +30,11 @@ export class ApplicationService {
   departmentStatus$ = this._departmentStatus.asObservable();
 
   constructor(private http: HttpClient) {
-    forkJoin({
-      loanDetails: this.getLoanDetails(),
-    }).subscribe(({ loanDetails }) => {
-      this._loanDetails.next(loanDetails);
-    });
+    // forkJoin({
+    //   loanDetails: this.getLoanDetails(),
+    // }).subscribe(({ loanDetails }) => {
+    //   this._loanDetails.next(loanDetails);
+    // });
   }
 
   private apiLoanApplication = `${API_URL}/loanApplication`;

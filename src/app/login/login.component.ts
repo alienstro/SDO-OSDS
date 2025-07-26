@@ -55,11 +55,11 @@ export class LoginComponent implements OnInit {
   }
 
   navigateBasedOnRole(role: any) {
-    role = this.authService.getRole();
+    role = Number(this.authService.getRole());
 
     console.log(role)
 
-    if (role === '1' || role === 1) {
+    if (role === 8) {
       this.router.navigate(['/forward-view']);
 
     } else {

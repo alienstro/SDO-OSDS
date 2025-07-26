@@ -122,7 +122,7 @@ export class ForwardViewComponent implements OnInit {
   ngOnInit(): void {
     this.applicationService.getLoanApplication();
 
-    this.applicationService.loanDetails$.subscribe((loan) => {
+    this.applicationService.getLoanDetails().subscribe((loan) => {
       this.loanDetails = loan;
       this.updateTableData();
     });
