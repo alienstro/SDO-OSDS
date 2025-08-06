@@ -59,13 +59,13 @@ export class LoginComponent implements OnInit {
 
     console.log(role)
 
-    if (role === 8) {
+    if (role === 6) {
       this.router.navigate(['/forward-view']);
 
     } else {
       this.router.navigate(['/login']);
       console.log("No authority")
-      this.snackBar.open('You are not allowed here!', '', {
+      this.snackBar.open('Unauthorize Access', '', {
         duration: 3000
       })
     }
