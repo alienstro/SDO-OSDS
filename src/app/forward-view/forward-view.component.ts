@@ -6,7 +6,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { FormViewComponent } from '../form-view/form-view.component';
 import { ApplicationService } from '../services/application.service';
-import { AssessViewComponent } from '../assess-view/assess-view.component';
 import { EndorseComponent } from '../endorse/endorse.component';
 import { Router } from '@angular/router';
 import { TokenService } from '../services/token.service';
@@ -61,15 +60,6 @@ export class ForwardViewComponent implements OnInit {
 
   openFormDetails(loan: LoanDetails): void {
     this.dialog.open(FormViewComponent, {
-      width: '90rem',
-      maxWidth: '90rem',
-      height: '55rem',
-      data: { loan: loan },
-    });
-  }
-
-  openAssessmentForm(loan: LoanDetails): void {
-    this.dialog.open(AssessViewComponent, {
       width: '90rem',
       maxWidth: '90rem',
       height: '55rem',

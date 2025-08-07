@@ -23,7 +23,7 @@ import { LoginComponent } from './login/login.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { FormViewComponent } from './form-view/form-view.component';
 import { ForwardViewComponent } from './forward-view/forward-view.component';
-import { AssessViewComponent } from './assess-view/assess-view.component';
+
 import { EndorseComponent } from './endorse/endorse.component';
 import { UserViewComponent } from './user-view/user-view.component';
 import { FormsModule } from '@angular/forms';
@@ -35,7 +35,6 @@ import { FormsModule } from '@angular/forms';
     SidebarComponent,
     FormViewComponent,
     ForwardViewComponent,
-    AssessViewComponent,
     UserViewComponent,
     EndorseComponent,
   ],
