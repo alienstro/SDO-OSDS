@@ -27,6 +27,7 @@ import { ForwardViewComponent } from './forward-view/forward-view.component';
 import { EndorseComponent } from './endorse/endorse.component';
 import { UserViewComponent } from './user-view/user-view.component';
 import { FormsModule } from '@angular/forms';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { FormsModule } from '@angular/forms';
     ForwardViewComponent,
     UserViewComponent,
     EndorseComponent,
+    ChangePasswordComponent,
   ],
   imports: [
     BrowserModule,

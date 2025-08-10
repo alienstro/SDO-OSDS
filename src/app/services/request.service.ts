@@ -4,12 +4,10 @@ import { Observable } from 'rxjs';
 import { API_URL } from '../constant';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class RequestService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   // login(data: LoginRequest) {
   //   return this.http.post<LoginResponse>(API_URL+'login', data);
@@ -19,7 +17,10 @@ export class RequestService {
 
   updateApprovalOSDS(data: any): Observable<any> {
     console.log(data);
-    return this.http.patch(`${this.apiLoanApplication}/updateApprovalOSDS`, data);
+    return this.http.patch(
+      `${this.apiLoanApplication}/updateApprovalOSDS`,
+      data
+    );
   }
 
   // updateApprovalOSDS(data: any): Observable<any> {
@@ -47,6 +48,13 @@ export class RequestService {
     return this.http.post(`${API_URL}` + `submitApprovalSDS`, data);
   }
 
+  editPasswordStaff(data: any): Observable<any> {
+    console.log('request service staff: ', data);
+    return this.http.put(
+      `${API_URL}` + `/staffUser/change-password/${data.staff_id}`,
+      data
+    );
+  }
 
   // addLoanApplication(data: any): Observable<any> {
   //   const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -56,5 +64,4 @@ export class RequestService {
   // get<T>(endpoint: string) {
   //   return this.http.get<Response<T>>(`${API_URL}/${endpoint}`)
   // }
-
 }
