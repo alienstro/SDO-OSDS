@@ -54,7 +54,7 @@ export class ForwardViewComponent implements OnInit {
     );
   }
 
-  openView(loan: LoanDetails): void {
+  openView(loan: any): void {
     this.router.navigate(['/user-view'], { state: { loanDetails: loan } });
   }
 
@@ -99,6 +99,7 @@ export class ForwardViewComponent implements OnInit {
     const searchValue = this.searchKey.trim().toLowerCase();
     this.dataSource.filterPredicate = (data: any, filter: string) => {
       const status = data.status;
+      console.log(data)
       return (
         (data.last_name.toLowerCase().includes(searchValue) ||
           data.first_name.toLowerCase().includes(searchValue)) &&
