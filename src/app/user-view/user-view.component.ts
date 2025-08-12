@@ -26,7 +26,7 @@ import { TokenService } from '../services/token.service';
   styleUrl: './user-view.component.css',
 })
 export class UserViewComponent {
- @ViewChild('pdfPreview', { static: false })
+  @ViewChild('pdfPreview', { static: false })
   pdfPreview!: ElementRef<HTMLIFrameElement>;
 
   @ViewChild('pdfPreviewAssessment', { static: false })
@@ -87,6 +87,17 @@ export class UserViewComponent {
         responseType: 'arraybuffer',
       })
       .subscribe((bytes) => (this.formPdfBytesAuthorization = bytes));
+  }
+
+  numberWithCommasAndDecimal(number: number) {
+    if (!number || number === null) {
+      return '';
+    } else {
+      return Number(number).toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+    }
   }
 
   numberToWordsWithDecimal(num: number): string {
@@ -385,14 +396,14 @@ export class UserViewComponent {
       b_reviewed_signature: bReviewedSignatureImage,
 
       // Computation of Loan
-      principal_amount: this.assessmentDetails[0]?.principal_loan_amount,
-      outstanding_principal: this.assessmentDetails[0]?.principal,
-      outstanding_interest: this.assessmentDetails[0]?.interest,
-      outstanding_balance: this.assessmentDetails[0]?.outstanding_balance,
-      net_proceeds: this.assessmentDetails[0]?.net_proceeds,
+      principal_amount: this.numberWithCommasAndDecimal(this.assessmentDetails[0]?.principal_loan_amount),
+      outstanding_principal: this.numberWithCommasAndDecimal(this.assessmentDetails[0]?.principal),
+      outstanding_interest: this.numberWithCommasAndDecimal(this.assessmentDetails[0]?.interest),
+      outstanding_balance: this.numberWithCommasAndDecimal(this.assessmentDetails[0]?.outstanding_balance),
+      net_proceeds: this.numberWithCommasAndDecimal(this.assessmentDetails[0]?.net_proceeds),
       net_take_home_pay:
-        this.assessmentDetails[0]?.net_take_home_pay_after_deduction,
-      monthly_amortization: this.assessmentDetails[0]?.monthly_amortization,
+        this.numberWithCommasAndDecimal(this.assessmentDetails[0]?.net_take_home_pay_after_deduction),
+      monthly_amortization: this.numberWithCommasAndDecimal(this.assessmentDetails[0]?.monthly_amortization),
       period_of_loan: this.assessmentDetails[0]?.period_of_loan,
       a_processed_signature: aProcessedSignatureImage,
       a_reviewed_signature: aReviewedSignatureImage,
@@ -764,7 +775,7 @@ export class UserViewComponent {
 
     const data = {
       date_submitted: this.formatDateToLong(this.loanDetails[0].date_submitted),
-      loan_amount: this.loanDetails[0].loan_amount,
+      loan_amount: this.numberWithCommasAndDecimal(this.loanDetails[0].loan_amount),
       term: this.loanDetails[0].term,
       loan_application_number: this.loanDetails[0].loan_application_number,
       multi_purpose: this.loanDetails[0].type_of_loan.includes(
@@ -816,7 +827,9 @@ export class UserViewComponent {
       borrower_office: this.borrowersInformation[0].office,
       borrower_date_of_birth: this.borrowersInformation[0].date_of_birth,
       borrower_age: this.borrowersInformation[0].age,
-      borrower_monthly_salary: this.borrowersInformation[0].monthly_salary,
+      borrower_monthly_salary: this.numberWithCommasAndDecimal(
+        this.borrowersInformation[0].monthly_salary
+      ),
       borrower_office_tel_no: this.borrowersInformation[0].office_tel_number,
       borrower_years_in_service: this.borrowersInformation[0].years_in_service,
       borrower_mobile_no: this.borrowersInformation[0].mobile_number,
@@ -839,7 +852,9 @@ export class UserViewComponent {
       co_makers_office: this.coMakersInformation[0].co_office,
       co_makers_date_of_birth: this.coMakersInformation[0].co_date_of_birth,
       co_makers_age: this.coMakersInformation[0].co_age,
-      co_makers_monthly_salary: this.coMakersInformation[0].co_monthly_salary,
+      co_makers_monthly_salary: this.numberWithCommasAndDecimal(
+        this.coMakersInformation[0].co_monthly_salary
+      ),
       co_makers_office_tel_no: this.coMakersInformation[0].co_office_tel_number,
       co_makers_years_in_service:
         this.coMakersInformation[0].co_years_in_service,
@@ -848,7 +863,7 @@ export class UserViewComponent {
       co_makers_specimen_signature_2: coMakerSignatureImage,
 
       pesos_word: this.numberToWords(this.loanDetails[0].loan_amount),
-      pesos_number: this.loanDetails[0].loan_amount,
+      pesos_number: this.numberWithCommasAndDecimal(this.loanDetails[0].loan_amount),
       borrower_signature: borrowerSignatureImage,
       borrower_name: [
         this.borrowersInformation[0]?.first_name ?? '',
@@ -894,7 +909,7 @@ export class UserViewComponent {
         this.borrowersInformation[0].employment_status_hr.includes(
           'co-terminus'
         ),
-      net_pay: this.borrowersInformation[0].net_pay,
+      net_pay: this.numberWithCommasAndDecimal(this.borrowersInformation[0].net_pay),
       year_of: this.borrowersInformation[0].payroll_date
         ? this.formatDateToMonthYear(
             this.borrowersInformation[0]?.payroll_date.toString()
@@ -1197,7 +1212,7 @@ export class UserViewComponent {
       outstanding_loan_words: this.numberToWords(
         this.loanDetails[0].loan_amount
       ),
-      outstanding_loan_amount: this.loanDetails[0].loan_amount,
+      outstanding_loan_amount: this.numberWithCommasAndDecimal(this.loanDetails[0].loan_amount),
       signature: borrowerSignatureImage,
       signature_name: [
         this.borrowersInformation[0]?.first_name ?? '',
