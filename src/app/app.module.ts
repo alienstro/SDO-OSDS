@@ -28,6 +28,7 @@ import { EndorseComponent } from './endorse/endorse.component';
 import { UserViewComponent } from './user-view/user-view.component';
 import { FormsModule } from '@angular/forms';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { RejectDialogComponent } from './reject-dialog/reject-dialog.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
     UserViewComponent,
     EndorseComponent,
     ChangePasswordComponent,
+    RejectDialogComponent,
   ],
   imports: [
     BrowserModule,
