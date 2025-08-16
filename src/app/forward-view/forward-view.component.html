@@ -6,18 +6,9 @@
 
     <div class="search">
       <div class="search">
-        <img
-          class="search-img"
-          src="/magnifying_glass.svg"
-          alt="magnifying_glass"
-        />
-        <input
-          type="text"
-          placeholder="Search Employee"
-          class="search-input"
-          [(ngModel)]="searchKey"
-          (input)="applyFilter()"
-        />
+        <img class="search-img" src="/magnifying_glass.svg" alt="magnifying_glass" />
+        <input type="text" placeholder="Search Employee" class="search-input" [(ngModel)]="searchKey"
+          (input)="applyFilter()" />
       </div>
 
       <div class="status-filter">
@@ -26,6 +17,7 @@
             <option value="">Filter Status</option>
             <option value="Pending">Pending</option>
             <option value="Approved">Approved</option>
+            <option value="Rejected">Rejected</option>
           </select>
         </div>
       </div>
@@ -38,7 +30,7 @@
           <ng-container matColumnDef="loan_details_id">
             <th mat-header-cell *matHeaderCellDef>Application #</th>
             <td mat-cell *matCellDef="let element">
-              {{ element.loan_details_id }}
+              {{ element.application_id }}
             </td>
           </ng-container>
 
@@ -94,6 +86,33 @@
             </td>
           </ng-container>
 
+          <!-- Remarks Column -->
+          <ng-container matColumnDef="remarks_message">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Remarks
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.remarks_message || "None" }}
+            </td>
+          </ng-container>
+
+          <!-- Status Column -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let element">
+              <!-- {{
+                element.status === "Rejected"
+                  ? "Rejected"
+                  : roleId === 8
+                  ? element.status
+                    ? "Approved"
+                    : "Not Approved"
+                  : "Pending"
+              }} -->
+              {{ element.status }}
+            </td>
+          </ng-container>
+
           <!-- Action Column -->
           <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef>Action</th>
@@ -115,23 +134,6 @@
             </td>
           </ng-container>
 
-          <!-- Status Column -->
-          <ng-container matColumnDef="status">
-            <th mat-header-cell *matHeaderCellDef>Status</th>
-            <td mat-cell *matCellDef="let element">
-              <!-- {{
-                element.status === "Rejected"
-                  ? "Rejected"
-                  : roleId === 8
-                  ? element.status
-                    ? "Approved"
-                    : "Not Approved"
-                  : "Pending"
-              }} -->
-              {{ element.status }}
-            </td>
-          </ng-container>
-
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
@@ -140,11 +142,8 @@
           </tr>
         </table>
 
-        <mat-paginator
-          [pageSizeOptions]="[5, 10, 20]"
-          showFirstLastButtons
-          aria-label="Select page of periodic elements"
-        >
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+          aria-label="Select page of periodic elements">
         </mat-paginator>
       </div>
     </div>

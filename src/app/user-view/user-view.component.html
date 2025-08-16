@@ -854,6 +854,13 @@
             *ngIf="loanDetailsForward?.[0]?.status === 'Approved'">
             <span>Forwarded</span>
           </button>
+
+           <button class="button-action" style="margin-left: 1rem" (click)="openReject()" *ngIf="
+            loanDetailsForward?.[0]?.status === 'Pending' &&
+            loanDetails[0].status !== 'Rejected'
+          ">
+            <span>Reject</span>
+          </button>
         </div>
       </div>
     </div>

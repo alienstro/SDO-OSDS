@@ -23,6 +23,11 @@ export class RequestService {
     );
   }
 
+  rejectApprovalApplication(data: any): Observable<any> {
+    console.log(data);
+    return this.http.post(`${API_URL}` + `/loanApplication/rejectApplicationOffice`, data);
+  }
+
   // updateApprovalOSDS(data: any): Observable<any> {
   //   console.log(data);
   //   return this.http.patch(`${API_URL}` + `updateApprovalOSDS`, data);
