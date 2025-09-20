@@ -6,12 +6,11 @@ import { LoginService } from '../services/login.service';
 import { AuthService } from '../services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
-  standalone: false
+  standalone: false,
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
@@ -22,33 +21,38 @@ export class LoginComponent implements OnInit {
     private loginService: LoginService,
     private authService: AuthService,
     private snackBar: MatSnackBar
-
-  ) {
-
-  }
+  ) {}
 
   onLogin() {
     const loginData = this.loginForm.value;
 
-    if(loginData.email === '' || loginData.password === '') {
-      this.snackBar.open("Email and Password are required. Please Try Again.", 'Close', { duration: 3000 });
+    if (loginData.email === '' || loginData.password === '') {
+      this.snackBar.open(
+        'Email and Password are required. Please Try Again.',
+        'Close',
+        { duration: 3000 }
+      );
       return;
     }
 
     this.loginService.login(loginData).subscribe(
       (response) => {
-        if (response.message !== "Invalid email or password") {
+        if (response.message !== 'Invalid email or password') {
           // console.log("User Logged in: ", response);
 
           this.setTokenInCookie(response.token);
           this.navigateBasedOnRole(response.role);
           this.loginService.LoggedIn();
         } else {
-          this.snackBar.open("Email or password is incorrect. Please try again.", 'Close', { duration: 3000 });
+          this.snackBar.open(
+            'Email or password is incorrect. Please try again.',
+            'Close',
+            { duration: 3000 }
+          );
         }
       },
       (error) => {
-        this.snackBar.open("Email or password is incorrect. Please try again.");
+        this.snackBar.open('Email or password is incorrect. Please try again.');
         console.error('Error creating user: ', error);
       }
     );
@@ -57,30 +61,28 @@ export class LoginComponent implements OnInit {
   navigateBasedOnRole(role: any) {
     role = Number(this.authService.getRole());
 
-    console.log(role)
+    console.log(role);
 
-    if (role === 6) {
+    if (role === 7) {
       this.router.navigate(['/forward-view']);
-
+      this.snackBar.open('Successfully Logged In', 'Close', { duration: 3000 });
     } else {
       this.router.navigate(['/login']);
-      console.log("No authority")
+      console.log('No authority');
       this.snackBar.open('Unauthorize Access', '', {
-        duration: 3000
-      })
+        duration: 3000,
+      });
     }
   }
 
   setTokenInCookie(token: string) {
-    document.cookie = "token=" + token;
+    document.cookie = 'token=' + token;
   }
-
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
     });
   }
-
 }
