@@ -49,7 +49,7 @@ export class UserViewComponent {
   roleId: number = 0;
 
   loanDetailsForward?: any;
-  loanDetails?: any
+  loanDetails?: any;
   borrowersInformation: BorrowersInformation[] = [{} as BorrowersInformation];
   coMakersInformation: CoMakersInformation[] = [{} as CoMakersInformation];
   assessmentDetails: Assessment[] = [{} as Assessment];
@@ -112,7 +112,10 @@ export class UserViewComponent {
     let words = this.numberToWords(integerPart).replace(/-/g, ' ');
 
     if (decimalPart > 0) {
-      words += ' AND ' + this.numberToWords(decimalPart).replace(/-/g, ' ') + ' CENTAVOS';
+      words +=
+        ' AND ' +
+        this.numberToWords(decimalPart).replace(/-/g, ' ') +
+        ' CENTAVOS';
     }
 
     return words.toUpperCase();
@@ -162,8 +165,8 @@ export class UserViewComponent {
         tens === 0
           ? ''
           : tens === 1
-            ? a[10 + ones]
-            : b[tens] + (ones === 0 ? '' : '-' + a[ones]),
+          ? a[10 + ones]
+          : b[tens] + (ones === 0 ? '' : '-' + a[ones]),
         tens === 1 ? '' : ones === 0 ? '' : tens === 0 ? a[ones] : '',
       ].join('');
     };
@@ -216,10 +219,17 @@ export class UserViewComponent {
         c.charCodeAt(0)
       );
 
-      if (base64.includes('jpeg') || base64.includes('jpg')) {
+      if (
+        base64.includes('data:image/jpeg') ||
+        base64.includes('data:image/jpg')
+      ) {
         return await pdfDoc.embedJpg(byteArray);
-      } else {
+      } else if (base64.includes('data:image/png')) {
         return await pdfDoc.embedPng(byteArray);
+      } else {
+        throw new Error(
+          'Unsupported image format. Only JPEG and PNG are supported.'
+        );
       }
     } catch (error) {
       console.error('Error converting base64 to image:', error);
@@ -330,13 +340,13 @@ export class UserViewComponent {
       d_reviewed_signature: dReviewedSignatureImage,
       d_date_reviewed: this.signatureDetails[0]?.admin_date
         ? new Date(this.signatureDetails[0].admin_date).toLocaleDateString(
-          'en-US',
-          {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-          }
-        )
+            'en-US',
+            {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+            }
+          )
         : '',
 
       // Completeness and Veracity of Submitted Documents
@@ -358,13 +368,13 @@ export class UserViewComponent {
       c_reviewed_signature: dReviewedSignatureImage,
       c_date_reviewed: this.signatureDetails[0]?.admin_date
         ? new Date(this.signatureDetails[0].admin_date).toLocaleDateString(
-          'en-US',
-          {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-          }
-        )
+            'en-US',
+            {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+            }
+          )
         : '',
 
       // Eligibility of the Borrower and Co-Maker
@@ -377,9 +387,19 @@ export class UserViewComponent {
       borrower_has_outstanding:
         this.assessmentDetails[0]?.borrowers_has_outstanding_balance === 'Yes',
       current_loan: !!this.assessmentDetails[0]?.current_loan_balance,
-      current_loan_balance: Number(this.assessmentDetails[0]?.current_loan_balance).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+      current_loan_balance: Number(
+        this.assessmentDetails[0]?.current_loan_balance
+      ).toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
       past_due: !!this.assessmentDetails[0]?.past_due_loan,
-      past_due_loans: Number(this.assessmentDetails[0]?.past_due_loan).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+      past_due_loans: Number(
+        this.assessmentDetails[0]?.past_due_loan
+      ).toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
       no_of_years_months:
         this.assessmentDetails[0]?.number_of_years_past_due > 0 ||
         this.assessmentDetails[0]?.number_of_months_past_due > 0,
@@ -392,36 +412,49 @@ export class UserViewComponent {
         this.assessmentDetails[0]?.percentage_of_principal_paid,
       b_date_reviewed: this.signatureDetails[0].accounting_date
         ? new Date(this.signatureDetails[0].accounting_date).toLocaleDateString(
-          'en-US',
-          {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-          }
-        )
+            'en-US',
+            {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+            }
+          )
         : '',
       b_reviewed_signature: bReviewedSignatureImage,
 
       // Computation of Loan
-      principal_amount: this.numberWithCommasAndDecimal(this.assessmentDetails[0]?.principal_loan_amount),
-      outstanding_principal: this.numberWithCommasAndDecimal(this.assessmentDetails[0]?.principal),
-      outstanding_interest: this.numberWithCommasAndDecimal(this.assessmentDetails[0]?.interest),
-      outstanding_balance: this.numberWithCommasAndDecimal(this.assessmentDetails[0]?.outstanding_balance),
-      net_proceeds: this.numberWithCommasAndDecimal(this.assessmentDetails[0]?.net_proceeds),
-      net_take_home_pay:
-        this.numberWithCommasAndDecimal(this.assessmentDetails[0]?.net_take_home_pay_after_deduction),
-      monthly_amortization: this.numberWithCommasAndDecimal(this.assessmentDetails[0]?.monthly_amortization),
+      principal_amount: this.numberWithCommasAndDecimal(
+        this.assessmentDetails[0]?.principal_loan_amount
+      ),
+      outstanding_principal: this.numberWithCommasAndDecimal(
+        this.assessmentDetails[0]?.principal
+      ),
+      outstanding_interest: this.numberWithCommasAndDecimal(
+        this.assessmentDetails[0]?.interest
+      ),
+      outstanding_balance: this.numberWithCommasAndDecimal(
+        this.assessmentDetails[0]?.outstanding_balance
+      ),
+      net_proceeds: this.numberWithCommasAndDecimal(
+        this.assessmentDetails[0]?.net_proceeds
+      ),
+      net_take_home_pay: this.numberWithCommasAndDecimal(
+        this.assessmentDetails[0]?.net_take_home_pay_after_deduction
+      ),
+      monthly_amortization: this.numberWithCommasAndDecimal(
+        this.assessmentDetails[0]?.monthly_amortization
+      ),
       period_of_loan: this.assessmentDetails[0]?.period_of_loan,
       a_processed_signature: aProcessedSignatureImage,
       a_reviewed_signature: aReviewedSignatureImage,
       date_processed: this.assessmentDetails[0]?.computation_date_processed
         ? new Date(
-          this.assessmentDetails[0]?.computation_date_processed
-        ).toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-        })
+            this.assessmentDetails[0]?.computation_date_processed
+          ).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+          })
         : '',
       remarks: this.assessmentDetails[0]?.remarks,
 
@@ -430,24 +463,24 @@ export class UserViewComponent {
       recommending_signature_sds: recommendingSignatureImageSDS,
       date_asds: this.signatureDetails[0]?.asds_date
         ? new Date(this.signatureDetails[0]?.asds_date).toLocaleDateString(
-          'en-US',
-          {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-          }
-        )
+            'en-US',
+            {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+            }
+          )
         : '',
 
       date_sds: this.signatureDetails[0]?.sds_date
         ? new Date(this.signatureDetails[0]?.sds_date).toLocaleDateString(
-          'en-US',
-          {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-          }
-        )
+            'en-US',
+            {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric',
+            }
+          )
         : '',
     };
 
@@ -782,7 +815,9 @@ export class UserViewComponent {
 
     const data = {
       date_submitted: this.formatDateToLong(this.loanDetails[0].date_submitted),
-      loan_amount: this.numberWithCommasAndDecimal(this.loanDetails[0].loan_amount),
+      loan_amount: this.numberWithCommasAndDecimal(
+        this.loanDetails[0].loan_amount
+      ),
       term: this.loanDetails[0].term,
       loan_application_number: this.loanDetails[0].loan_application_number,
       multi_purpose: this.loanDetails[0].type_of_loan.includes(
@@ -870,7 +905,9 @@ export class UserViewComponent {
       co_makers_specimen_signature_2: coMakerSignatureImage,
 
       pesos_word: this.numberToWords(this.loanDetails[0].loan_amount),
-      pesos_number: this.numberWithCommasAndDecimal(this.loanDetails[0].loan_amount),
+      pesos_number: this.numberWithCommasAndDecimal(
+        this.loanDetails[0].loan_amount
+      ),
       borrower_signature: borrowerSignatureImage,
       borrower_name: [
         this.borrowersInformation[0]?.first_name ?? '',
@@ -911,19 +948,21 @@ export class UserViewComponent {
         : '',
       permanent:
         typeof this.borrowersInformation[0]?.employment_status_hr ===
-        'string' &&
+          'string' &&
         this.borrowersInformation[0].employment_status_hr.includes('permanent'),
       co_terminus:
         typeof this.borrowersInformation[0]?.employment_status_hr ===
-        'string' &&
+          'string' &&
         this.borrowersInformation[0].employment_status_hr.includes(
           'co-terminus'
         ),
-      net_pay: this.numberWithCommasAndDecimal(this.borrowersInformation[0].net_pay),
+      net_pay: this.numberWithCommasAndDecimal(
+        this.borrowersInformation[0].net_pay
+      ),
       year_of: this.borrowersInformation[0].payroll_date
         ? this.formatDateToMonthYear(
-          this.borrowersInformation[0]?.payroll_date.toString()
-        )
+            this.borrowersInformation[0]?.payroll_date.toString()
+          )
         : '',
 
       legal_signature: legalSignatureImage,
@@ -1223,7 +1262,9 @@ export class UserViewComponent {
       outstanding_loan_words: this.numberToWords(
         this.loanDetails[0].loan_amount
       ),
-      outstanding_loan_amount: this.numberWithCommasAndDecimal(this.loanDetails[0].loan_amount),
+      outstanding_loan_amount: this.numberWithCommasAndDecimal(
+        this.loanDetails[0].loan_amount
+      ),
       signature: borrowerSignatureImage,
       signature_name: [
         this.borrowersInformation[0]?.first_name ?? '',
@@ -1372,7 +1413,7 @@ export class UserViewComponent {
         this.currentUrl = event.urlAfterRedirects;
       }
     });
-    console.log("loan details state: ", this.loanDetails)
+    console.log('loan details state: ', this.loanDetails);
 
     this.application_id = this.loanDetailsForward[0].application_id;
     this.applicant_id = this.loanDetailsForward[0].applicant_id;
