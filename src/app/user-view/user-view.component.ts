@@ -1367,7 +1367,7 @@ export class UserViewComponent {
   }
 
   goBack(): void {
-    this.router.navigate(['/forward']);
+    this.router.navigate(['/forward-view']);
   }
 
   transform(url: string): SafeResourceUrl {
